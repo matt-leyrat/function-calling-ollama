@@ -1,3 +1,5 @@
+import asyncio
+import ollama
 import urwid
 from model import model, handle_tool_calls
 
@@ -22,7 +24,7 @@ class ChatUI:
             ('assistant_response', 'light blue', 'default'),
         ]
         
-        self.loop = urwid.MainLoop(self.frame, palette=palette, unhandled_input=self.handle_input)
+        self.loop = urwid.MainLoop(self.frame, palette=palette, unhandled_input=self.handle_input, event_loop=urwid.AsyncioEventLoop(loop=asyncio.get_event_loop()))
 
     def handle_input(self, key):
         if key == 'enter':
@@ -36,12 +38,38 @@ class ChatUI:
             response = model.invoke(user_input)
             result = handle_tool_calls(response.tool_calls)
             
-            # Wrap the assistant response in a urwid.Text widget
-            assistant_response = urwid.Text(('assistant_response', f"Assistant: {result}"))
-            self.chat_history.append(assistant_response)
-            
-            self.chat_list.focus_position = len(self.chat_history) - 1
-            self.loop.draw_screen()  # Refresh the screen after handling input
+            asyncio.ensure_future(self.stream_assistant_response(user_input, result))
+
+    async def stream_assistant_response(self, user_input, result):
+        interpreted_result_stream = ollama.chat(
+            model='llama3',
+            messages=[
+                {
+                    'role': 'user',
+                    'content': f"Your role is to interpret the results of a function call from another LLM. The user query was this: {user_input}. Interpret these results: {result}."
+                }
+            ],
+            stream=True,
+        )
+        
+        assistant_response = urwid.Text(('assistant_response', "Assistant: "))
+        self.chat_history.append(assistant_response)
+        self.chat_list.focus_position = len(self.chat_history) - 1
+        self.loop.draw_screen()  # Refresh the screen after adding the initial response
+        
+        for chunk in interpreted_result_stream:
+            # Extract the text content from the chunk dictionary
+            text_content = chunk['message']['content']
+            if text_content:  # Check if the text content is not empty
+                assistant_response.set_text(('assistant_response', assistant_response.get_text()[0] + text_content))
+                self.loop.draw_screen()  # Refresh the screen after each chunk
+            else:
+                if chunk['done_reason'] == 'stop':
+                    return
+                print("Received empty chunk or invalid format:", chunk)  # Log empty or invalid chunks
 
     def run(self):
         self.loop.run()
+
+if __name__ == "__main__":
+    ChatUI().run()
