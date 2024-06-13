@@ -3,7 +3,7 @@ from tools import tools
 from functions import wiki_search, random_joke, get_current_weather, get_news, google_search
 
 model = OllamaFunctions(
-    model="llama3", 
+    model="phi3", 
     format="json"
 )
 
