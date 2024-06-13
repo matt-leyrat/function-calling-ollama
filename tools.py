@@ -22,20 +22,6 @@ tools = [
         }
     },
     {
-        "name": "google_search",
-        "description": "Search Google for the given query and return the results",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "query": {
-                    "type": "string",
-                    "description": "The search query",
-                },
-            },
-            "required": ["query"],
-        },
-    },
-    {
         "name": "get_current_weather",
         "description": "Get the current weather in a given location",
         "parameters": {
@@ -71,5 +57,19 @@ tools = [
           },
           "required": ["query"]
       }
+    },
+    {
+      "name": "google_search",
+      "description": "Search Google for the given query, scrape the first result, and return the results",
+      "parameters": {
+          "type": "object",
+          "properties": {
+              "query": {
+                  "type": "string",
+                  "description": "The search query",
+              },
+          },
+          "required": ["query"],
+      },
     }
 ]

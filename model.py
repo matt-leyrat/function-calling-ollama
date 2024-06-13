@@ -1,6 +1,6 @@
 from langchain_experimental.llms.ollama_functions import OllamaFunctions
 from tools import tools
-from functions import wiki_search, random_joke, google_search, get_current_weather, get_news
+from functions import wiki_search, random_joke, get_current_weather, get_news, google_search_and_scrape
 
 model = OllamaFunctions(
     model="llama3", 
@@ -19,11 +19,11 @@ def handle_tool_calls(tool_calls):
             return wiki_search(tool_input['query'])
         elif selected_tool == 'random_joke':
             return random_joke()
-        elif selected_tool == 'google_search':
-            return google_search(tool_input['query'])
         elif selected_tool == 'get_current_weather':
             return get_current_weather(tool_input['location'], tool_input.get('unit', 'celsius'))
         elif selected_tool == 'get_news':
             return get_news(tool_input['query'])
+        elif selected_tool == 'google_search_and_scrape':
+            return google_search_and_scrape(tool_input['query'])
     else:
         return("No tool was selected.")
