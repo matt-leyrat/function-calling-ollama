@@ -29,6 +29,7 @@ def get_news(query, num_results=5):
     return articles
 
 def wiki_search(query):
+    # TODO: scrape for wiki search
     try:
         search_results = wikipedia.search(query)
         return search_results
@@ -61,7 +62,7 @@ def get_current_weather(location, unit):
     else:
         return None
 
-def google_search_and_scrape(query: str) -> dict:
+def google_search(query: str) -> dict:
     """
     Shamefully borrowed from hermes-function-calling...
     Performs a Google search for the given query, retrieves the top search result URLs,
