@@ -16,16 +16,12 @@ def handle_tool_calls(tool_calls):
         
         # Execute the corresponding function based on the selected tool
         if selected_tool == 'wiki_search':
-            results = wiki_search(tool_input['query'])
-            print(results)
+            return wiki_search(tool_input['query'])
         elif selected_tool == 'random_joke':
-            joke = random_joke()
-            print(joke)
+            return random_joke()
         elif selected_tool == 'google_search':
-            results = google_search(tool_input['query'])
-            print(results)
+            return google_search(tool_input['query'])
         elif selected_tool == 'get_current_weather':
-            weather = get_current_weather(tool_input['location'], tool_input.get('unit', 'celsius'))
-            print(weather)
+            return get_current_weather(tool_input['location'], tool_input.get('unit', 'celsius'))
     else:
         print("No tool was selected.")

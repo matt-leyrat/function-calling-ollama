@@ -20,4 +20,5 @@ if __name__ == '__main__':
 
             # Invoke function selection model
             response = model.invoke(user_input)
-            handle_tool_calls(response.tool_calls)
+            result = handle_tool_calls(response.tool_calls)
+            print(result)

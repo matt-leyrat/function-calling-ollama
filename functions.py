@@ -26,7 +26,6 @@ def google_search(query):
 
 def get_current_weather(location, unit):
     api_key = os.environ.get("WEATHER_API_KEY")
-    print(api_key)
     base_url = "http://api.openweathermap.org/data/2.5/weather"
     params = {
         "q": location,
