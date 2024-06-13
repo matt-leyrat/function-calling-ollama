@@ -1,0 +1,17 @@
+name: function-calling-ollama
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12
+  - pip=24.0
+  - openai=1.33.0
+  - langchain=0.2.3
+  - langchain-core=0.2.3
+  - langchain-community=0.2.4
+  - langchain-experimental=0.0.60
+  - urwid=2.6.13
+  - pip:
+    - ollama==0.2.1
+    - wikipedia==1.4.0
+    - googlesearch-python==1.2.4
+    - python-dotenv==1.0.1
