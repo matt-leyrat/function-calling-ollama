@@ -6,6 +6,25 @@ from googlesearch import search
 
 load_dotenv()
 
+def get_news(query, num_results=5):
+    api_key = os.environ.get('NEWS_API_KEY')
+    
+    url = f'https://newsapi.org/v2/everything?q={query}&apiKey={api_key}'
+    
+    response = requests.get(url)
+    data = response.json()
+    
+    articles = []
+    for article in data['articles'][:num_results]:
+        articles.append({
+            'title': article['title'],
+            'description': article['description'],
+            'url': article['url'],
+            'publishedAt': article['publishedAt']
+        })
+    
+    return articles
+
 def wiki_search(query):
     try:
         search_results = wikipedia.search(query)

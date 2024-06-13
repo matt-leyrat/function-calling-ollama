@@ -53,4 +53,23 @@ tools = [
             "required": ["location"],
         },
     },
+    {
+      "name": "get_news",
+      "description": "Fetches news articles related to the given query",
+      "parameters": {
+          "type": "object",
+          "properties": {
+              "query": {
+                  "type": "string",
+                  "description": "The search query for news articles"
+              },
+              "num_results": {
+                  "type": "integer",
+                  "description": "The number of news articles to return",
+                  "default": 5
+              }
+          },
+          "required": ["query"]
+      }
+    }
 ]
