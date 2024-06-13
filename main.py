@@ -1,9 +1,7 @@
 import argparse
-import ollama
-from langchain_experimental.llms.ollama_functions import OllamaFunctions
 
 from chat_ui import ChatUI
-from model import model, handle_tool_calls
+from model import interpret_results, model, handle_tool_calls
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Chat UI')
@@ -23,16 +21,7 @@ if __name__ == '__main__':
             response = model.invoke(user_input)
             print(response)
             result = handle_tool_calls(response.tool_calls)
-            interpreted_result_stream = ollama.chat(
-              model='llama3',
-              messages=[
-                  {
-                      'role': 'user',
-                      'content': f"Your role is to interpret the results of a function call from another LLM.the user query was this: {user_input} interpret these results: {result} if it's a joke just pass the joke along."
-                  }
-              ],
-              stream=True,
-            )
+            interpreted_result_stream = interpret_results(user_input, result)
             for chunk in interpreted_result_stream:
                 print(chunk['message']['content'], end='', flush=True)
             print('\n')

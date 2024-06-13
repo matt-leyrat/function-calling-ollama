@@ -1,7 +1,7 @@
 import asyncio
 import ollama
 import urwid
-from model import model, handle_tool_calls
+from model import interpret_results, model, handle_tool_calls
 
 class EditWithCursor(urwid.Edit):
     def render(self, size, focus=False):
@@ -41,16 +41,7 @@ class ChatUI:
             asyncio.ensure_future(self.stream_assistant_response(user_input, result))
 
     async def stream_assistant_response(self, user_input, result):
-        interpreted_result_stream = ollama.chat(
-            model='llama3',
-            messages=[
-                {
-                    'role': 'user',
-                    'content': f"Your role is to interpret the results of a function call from another LLM. The user query was this: {user_input}. Interpret these results: {result}."
-                }
-            ],
-            stream=True,
-        )
+        interpreted_result_stream = interpret_results(user_input, result)
         
         assistant_response = urwid.Text(('assistant_response', "Assistant: "))
         self.chat_history.append(assistant_response)
