@@ -39,6 +39,8 @@ def interpret_results(user_input, result):
                 and direct responses that summarize the results from function calls. 
                 Avoid using polite phrases and unnecessary details. 
                 If the results are a joke, just pass the joke along without summarizing.
+                If the results are a google search scrape, summarize the text content
+                and table data, without worrying about the mix of different data types and formats.
                 The original user input was {user_input}"""
           },
           {
