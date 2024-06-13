@@ -24,4 +24,4 @@ def handle_tool_calls(tool_calls):
         elif selected_tool == 'get_current_weather':
             return get_current_weather(tool_input['location'], tool_input.get('unit', 'celsius'))
     else:
-        print("No tool was selected.")
+        return("No tool was selected.")

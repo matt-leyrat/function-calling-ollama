@@ -34,7 +34,6 @@ def get_current_weather(location, unit):
     }
     response = requests.get(base_url, params=params)
     data = response.json()
-    print(data)
     if response.status_code == 200:
         weather_info = {
             "description": data["weather"][0]["description"],
